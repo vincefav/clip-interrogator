@@ -6,6 +6,7 @@ import os
 import requests
 import time
 import torch
+import random
 
 from dataclasses import dataclass
 from PIL import Image
@@ -135,6 +136,11 @@ class Interrogator():
         self.movements = LabelTable(load_list(config.data_path, 'movements.txt'), "movements", self)
         self.trendings = LabelTable(trending_list, "trendings", self)
         self.negative = LabelTable(load_list(config.data_path, 'negative.txt'), "negative", self)
+        
+        # Use 5000 random tokens
+        all_tokens = load_list(config.data_path, 'tokens.txt')
+        sampled_tokens = random.sample(all_tokens, 5000)
+        self.tokens = LabelTable(sampled_tokens, "tokens", self)
 
         end_time = time.time()
         if not config.quiet:
